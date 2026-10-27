@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sem AI</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #10121a;
+      color: white;
+      margin: 0;
+      padding: 30px 15px;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: 40px auto;
+    }
+
+    h1 {
+      color: #8b9dff;
+      text-align: center;
+    }
+
+    .intro {
+      text-align: center;
+      color: #c4c7d5;
+    }
+
+    #chat {
+      background: #1b1e2b;
+      border-radius: 12px;
+      padding: 15px;
+      min-height: 180px;
+      margin: 25px 0;
+      overflow-wrap: anywhere;
+    }
+
+    .message {
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin: 10px 0;
+      white-space: pre-wrap;
+    }
+
+    .user {
+      background: #30364b;
+    }
+
+    .sem {
+      background: #252b40;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      padding: 13px;
+      border: 1px solid #41465d;
+      border-radius: 8px;
+      background: #1b1e2b;
+      color: white;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 12px 16px;
+      border: none;
+      border-radius: 8px;
+      background: #7185ff;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #596de8;
+    }
+
+    .note {
+      color: #aeb3c7;
+      font-size: 13px;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+    <h1>Sem AI</h1>
+
+    <p class="intro">
+      Hoi! Ik ben Sem AI. Waarmee kan ik je helpen?
+    </p>
+
+    <div id="chat" aria-live="polite"></div>
+
+    <form id="chat-form" class="input-row">
+      <input
+        id="bericht"
+        type="text"
+        placeholder="Typ je bericht aan Sem AI..."
+        autocomplete="off"
+      >
+      <button type="submit">Verstuur</button>
+    </form>
+
+    <p class="note">
+      Sem AI is nog in ontwikkeling.
+    </p>
+  </main>
+
+  <script>
+    const form = document.querySelector('#chat-form');
+    const input = document.querySelector('#bericht');
+    const chat = document.querySelector('#chat');
+
+    function voegBerichtToe(naam, tekst, soort) {
+      const element = document.createElement('div');
+      element.className = 'message ' + soort;
+
+      // Veilige tekstweergave: voer gebruikersinvoer niet uit als HTML.
+      element.textContent = naam + ': ' + tekst;
+
+      chat.appendChild(element);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function geefAntwoord(bericht) {
+      const tekst = bericht.toLowerCase();
+
+      if (tekst.includes('hoi') || tekst.includes('hallo')) {
+        return 'Hoi! Leuk dat je met mij chat!';
+      }
+
+      if (tekst.includes('hoe gaat het')) {
+        return 'Alles klaar om je te helpen! Hoe gaat het met jou?';
+      }
+
+      if (tekst.includes('jouw naam') || tekst.includes('wie ben je')) {
+        return 'Ik ben Sem AI!';
+      }
+
+      if (tekst.includes('hoofdstad van frankrijk')) {
+        return 'De hoofdstad van Frankrijk is Parijs.';
+      }
+
+      if (tekst.includes('wat is 1 + 1') ||
+          tekst.includes('wat is 1+1')) {
+        return '1 + 1 = 2!';
+      }
+
+      if (tekst.includes('bedankt') || tekst.includes('dank je')) {
+        return 'Graag gedaan!';
+      }
+
+      return 'Dat weet ik nog niet. We kunnen mij samen slimmer maken!';
+    }
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const bericht = input.value.trim();
+
+      if (bericht === '') {
+        return;
+      }
+
+      voegBerichtToe('Jij', bericht, 'user');
+
+      const antwoord = geefAntwoord(bericht);
+      voegBerichtToe('Sem AI', antwoord, 'sem');
+
+      input.value = '';
+      input.focus();
+    });
+  </script>
+</body>
+</html>
