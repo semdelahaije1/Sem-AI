@@ -1,1015 +1,507 @@
 
-
+<!DOCTYPE html>
+<html lang="nl">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sem AI</title>
-
 <style>
 :root {
-  --bg: #0b0b12;
-  --panel: #141421;
-  --panel2: #202031;
-  --text: #f5f5ff;
-  --muted: #a5a5bb;
-  --border: #303047;
-  --accent: #8b5cf6;
-  --accent2: #477bff;
+  --bg: #080d1b;
+  --panel: #111a2e;
+  --panel2: #19243b;
+  --text: #f4f7ff;
+  --muted: #9baaca;
+  --blue: #6485ff;
+  --border: #263451;
 }
-
-body.light {
-  --bg: #f4f5fb;
-  --panel: #ffffff;
-  --panel2: #ededf7;
-  --text: #191927;
-  --muted: #66667c;
-  --border: #dedeea;
-}
-
-body.blue {
-  --accent: #0891b2;
-  --accent2: #2563eb;
-}
-
-body.green {
-  --accent: #059669;
-  --accent2: #65a30d;
-}
-
-* {
-  box-sizing: border-box;
-}
-
+* { box-sizing: border-box; }
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--text);
   font-family: Arial, sans-serif;
+  background: radial-gradient(ellipse at top, #172957, var(--bg) 65%);
+  color: var(--text);
   min-height: 100vh;
-  transition: background .2s, color .2s;
 }
-
-button, input, select {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
+button, input { font: inherit; }
+button { cursor: pointer; }
 header {
-  background: var(--panel);
-  border-bottom: 1px solid var(--border);
-  padding: 16px 5%;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
   gap: 12px;
+  padding: 18px 5%;
+  border-bottom: 1px solid var(--border);
+  background: #080d1bdc;
 }
-
-.logo {
-  width: 44px;
-  height: 44px;
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-icon {
   display: grid;
   place-items: center;
+  width: 43px;
+  height: 43px;
   border-radius: 14px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
+  background: linear-gradient(135deg, #6485ff, #a66bff);
+  font-size: 23px;
 }
-
-h1 {
-  margin: 0;
-  font-size: 22px;
-}
-
-.subtitle {
-  color: var(--muted);
-  font-size: 12px;
-  margin-top: 4px;
-}
-
-.header-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.small-btn, .suggestion, .tool-btn {
-  background: var(--panel2);
-  color: var(--text);
+.logo h1 { margin: 0; font-size: 22px; }
+.logo p { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
+.top-button, .small-button {
   border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
   border-radius: 10px;
-  padding: 9px 12px;
+  padding: 10px 12px;
 }
-
-.small-btn:hover, .suggestion:hover, .tool-btn:hover {
-  border-color: var(--accent);
-}
-
 main {
-  max-width: 850px;
-  width: calc(100% - 28px);
-  margin: 0 auto;
+  width: min(1100px, 92%);
+  margin: 35px auto;
 }
-
-.hero {
-  text-align: center;
-  padding: 35px 12px 22px;
-}
-
-.hero .star {
-  font-size: 36px;
-  color: var(--accent);
-}
-
-.hero h2 {
-  font-size: clamp(27px, 5vw, 40px);
-  margin: 10px 0;
-}
-
+.hero { text-align: center; margin-bottom: 28px; }
+.hero h2 { font-size: clamp(27px, 5vw, 43px); margin: 0 0 12px; }
 .gradient {
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  background-clip: text;
+  background: linear-gradient(90deg, #86a0ff, #d1a0ff);
   -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
 }
-
-.hero p {
-  color: var(--muted);
-  line-height: 1.6;
+.hero p { color: var(--muted); line-height: 1.6; }
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(230px, 1fr);
+  gap: 18px;
+  align-items: start;
 }
-
-.suggestions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 18px;
-}
-
-.chat-card {
+.panel {
   border: 1px solid var(--border);
+  background: #111a2eef;
   border-radius: 18px;
-  background: var(--panel);
-  overflow: hidden;
-  margin-bottom: 25px;
-}
-
-.chat-heading {
-  padding: 15px 18px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-}
-
-.status {
-  color: var(--muted);
-  font-size: 12px;
-  margin-top: 4px;
-}
-
-#chat {
-  height: 380px;
-  overflow-y: auto;
   padding: 18px;
+  min-width: 0;
+}
+.panel h3 { margin: 0 0 15px; }
+.chat {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  scroll-behavior: smooth;
+  gap: 12px;
+  height: 360px;
+  overflow-y: auto;
+  padding: 3px 2px 12px;
 }
-
-.welcome {
-  margin: auto;
-  text-align: center;
-  color: var(--muted);
-  line-height: 1.8;
-}
-
 .message {
-  max-width: 88%;
-  padding: 13px 15px;
-  border-radius: 15px;
-  line-height: 1.65;
-  overflow-wrap: anywhere;
+  max-width: 90%;
+  padding: 12px 14px;
+  border-radius: 14px;
+  line-height: 1.5;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
-
-.user-message {
-  align-self: flex-end;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  color: white;
-  border-bottom-right-radius: 4px;
-}
-
-.ai-message {
-  align-self: flex-start;
-  background: var(--panel2);
-  border: 1px solid var(--border);
-  border-bottom-left-radius: 4px;
-}
-
-.message-name {
-  display: block;
-  font-size: 12px;
-  font-weight: bold;
-  margin-bottom: 5px;
-  opacity: .8;
-}
-
-.message-tools {
-  display: flex;
-  gap: 7px;
-  margin-top: 10px;
-  flex-wrap: wrap;
-}
-
-.tool-btn {
-  font-size: 12px;
-  padding: 6px 9px;
-}
-
-.typing {
-  color: var(--muted);
-  font-style: italic;
-}
-
-.composer {
-  display: flex;
-  gap: 9px;
-  padding: 13px;
-  border-top: 1px solid var(--border);
-}
-
-#bericht {
-  flex: 1;
+.bot { background: var(--panel2); align-self: flex-start; }
+.user { background: #405cce; align-self: flex-end; }
+.message small { display: block; color: #c4d0f3; margin-top: 8px; }
+.composer { display: flex; gap: 8px; margin-top: 10px; }
+.composer input, .calc-input {
+  width: 100%;
   min-width: 0;
-  background: var(--panel2);
+  padding: 13px;
+  border-radius: 11px;
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px;
+  background: #080f20;
   color: var(--text);
   outline: none;
 }
-
-#bericht:focus {
-  border-color: var(--accent);
-}
-
+.composer input:focus, .calc-input:focus { border-color: var(--blue); }
 .primary {
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  color: white;
   border: 0;
-  border-radius: 12px;
-  padding: 0 17px;
+  background: linear-gradient(135deg, #6485ff, #865cf4);
+  color: white;
+  border-radius: 11px;
+  padding: 12px 16px;
   font-weight: bold;
 }
-
-.primary:disabled {
-  opacity: .5;
-  cursor: wait;
-}
-
-footer {
-  text-align: center;
-  padding: 15px 10px 28px;
+.suggestions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
+.suggestions button {
+  color: #dce4ff;
+  background: #1a2743;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 8px 10px;
   font-size: 12px;
-  color: var(--muted);
 }
-
-@media(max-width: 500px) {
-  header {
-    padding: 14px;
-  }
-
-  .header-actions {
-    width: 100%;
-  }
-
-  .small-btn {
-    flex: 1;
-  }
-
-  #chat {
-    height: 350px;
-    padding: 12px;
-  }
-
-  .message {
-    max-width: 95%;
-  }
-
-  .composer {
-    padding: 9px;
-  }
-
-  #bericht {
-    padding: 11px;
-  }
-
-  .primary {
-    padding: 0 12px;
-  }
+.tool { margin-bottom: 18px; }
+.tool p { color: var(--muted); font-size: 13px; line-height: 1.5; }
+.tool button { margin: 4px 4px 4px 0; }
+.result {
+  padding: 12px;
+  margin-top: 10px;
+  background: #080f20;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow-wrap: anywhere;
+}
+footer { text-align: center; color: var(--muted); font-size: 12px; padding: 25px; }
+@media(max-width: 720px) {
+  .layout { grid-template-columns: 1fr; }
+  main { margin-top: 24px; }
+  .chat { height: 330px; }
+  header { padding: 14px 4%; }
 }
 </style>
 </head>
-
 <body>
 <header>
-  <div class="brand">
-    <div class="logo">S</div>
+  <div class="logo">
+    <div class="logo-icon">✦</div>
     <div>
       <h1>Sem AI</h1>
-      <div class="subtitle">Jouw eigen chatbot</div>
+      <p>Jouw slimme digitale assistent</p>
     </div>
   </div>
-
-  <div class="header-actions">
-    <button class="small-btn" id="themeBtn">🎨 Thema</button>
-    <button class="small-btn" id="voiceBtn">🔊 Spraak</button>
-    <button class="small-btn" id="newChatBtn">＋ Nieuw gesprek</button>
-  </div>
+  <button class="top-button" id="clearButton">Wis chat</button>
 </header>
 
 <main>
   <section class="hero">
-    <div class="star">✦</div>
-    <h2>Dit is <span class="gradient">Sem AI</span></h2>
-    <p>Stel een vraag, probeer een rekensom of speel een quiz!</p>
-
-    <div class="suggestions">
-      <button class="suggestion" data-prompt="Vertel me een grap">😂 Grap</button>
-      <button class="suggestion" data-prompt="Wat kun je allemaal?">✨ Wat kun je?</button>
-      <button class="suggestion" data-prompt="Reken uit: 24 * 8">🧮 Rekenen</button>
-      <button class="suggestion" data-prompt="Start een quiz">🧠 Quiz</button>
-      <button class="suggestion" data-prompt="Wie is Elon Musk?">🌍 Weetjes</button>
-    </div>
+    <h2>Hey! Ik ben <span class="gradient">Sem AI</span> ✨</h2>
+    <p>Stel een vraag, reken iets uit of test je kennis.<br>
+    Kies hieronder een functie en ga aan de slag.</p>
   </section>
 
-  <section class="chat-card">
-    <div class="chat-heading">
-      <div>
-        <strong>Chat met Sem AI</strong>
-        <div class="status">● Klaar om te chatten</div>
+  <div class="layout">
+    <section class="panel">
+      <h3>💬 Chat met Sem AI</h3>
+      <div class="chat" id="chat" aria-live="polite">
+        <div class="message bot">Hoi! 👋 Ik ben Sem AI. Probeer een vraag hieronder of typ zelf iets!</div>
       </div>
-      <button class="small-btn" id="clearBtn">🗑 Wissen</button>
-    </div>
-
-    <div id="chat" aria-live="polite">
-      <div class="welcome" id="welkom">
-        ✨<br>
-        <strong>Hoi! Dit is Sem AI.</strong><br>
-        Waar kan ik je mee helpen?
+      <form class="composer" id="chatForm">
+        <input id="question" placeholder="Typ je vraag..." autocomplete="off" required>
+        <button class="primary" type="submit">Stuur</button>
+      </form>
+      <div class="suggestions">
+        <button data-question="Waarom is de lucht blauw?">🌤️ De blauwe lucht</button>
+        <button data-question="Vertel iets over de ruimte">🚀 De ruimte</button>
+        <button data-question="Wat is kunstmatige intelligentie?">🤖 AI uitleg</button>
+        <button data-question="Noem de hoofdsteden van Nederland, België en Frankrijk">🌍 Hoofdsteden</button>
       </div>
-    </div>
+    </section>
 
-    <form class="composer" id="chatForm">
-      <input id="bericht" maxlength="2000"
-        placeholder="Typ je bericht..."
-        autocomplete="off" required>
-      <button class="primary" id="sendBtn" type="submit">Stuur ↑</button>
-    </form>
-  </section>
+    <aside>
+      <section class="panel tool">
+        <h3>🧮 Rekenmachine</h3>
+        <p>Gebruik getallen en +, -, *, / en haakjes.</p>
+        <form id="calcForm">
+          <input class="calc-input" id="calcInput" placeholder="Bijv. (12 + 8) * 3" required>
+          <button class="primary" type="submit" style="margin-top:9px">Bereken</button>
+        </form>
+        <div class="result" id="calcResult">Je antwoord verschijnt hier.</div>
+      </section>
+
+      <section class="panel tool">
+        <h3>🧠 Quiz</h3>
+        <p id="quizQuestion">Test je kennis met een korte quiz.</p>
+        <div id="quizAnswers"></div>
+        <div class="result" id="quizResult">Je score: 0</div>
+        <button class="primary" id="startQuiz">Start quiz</button>
+      </section>
+
+      <section class="panel tool">
+        <h3>📋 Handige extra's</h3>
+        <button class="small-button" id="copyLast">Kopieer laatste antwoord</button>
+        <button class="small-button" id="themeButton">Verander achtergrond</button>
+        <p>Je chatgeschiedenis wordt op dit apparaat bewaard.</p>
+      </section>
+    </aside>
+  </div>
 </main>
 
-<footer>
-  Sem AI © 2026 · Gemaakt door Sem<br>
-  Gesprekken worden lokaal in deze browser bewaard.
-</footer>
+<footer>Sem AI · Gemaakt door Sem 💙 · Gratis demo zonder API</footer>
 
 <script>
 "use strict";
 
 const chat = document.getElementById("chat");
-const form = document.getElementById("chatForm");
-const input = document.getElementById("bericht");
-const sendBtn = document.getElementById("sendBtn");
-
-const HISTORY_KEY = "sem-ai-chat-v2";
-const THEME_KEY = "sem-ai-theme";
-
-let messages = [];
-let busy = false;
-let quiz = null;
+const questionInput = document.getElementById("question");
+let lastAnswer = "";
+let quizIndex = -1;
 let quizScore = 0;
-let voiceEnabled = false;
-let recognition = null;
+let quizActive = false;
+let themeIndex = 0;
 
-const quizQuestions = [
-  {
-    q: "Welke planeet staat het dichtst bij de zon?",
-    a: ["Venus", "Mercurius", "Mars"],
-    correct: 1
-  },
-  {
-    q: "Hoeveel poten heeft een spin?",
-    a: ["6", "8", "10"],
-    correct: 1
-  },
-  {
-    q: "Wat is de hoofdstad van Frankrijk?",
-    a: ["Parijs", "Rome", "Madrid"],
-    correct: 0
-  },
-  {
-    q: "Welk gas nemen planten op tijdens fotosynthese?",
-    a: ["Zuurstof", "Helium", "Koolstofdioxide"],
-    correct: 2
-  },
-  {
-    q: "Hoeveel is 9 × 7?",
-    a: ["56", "63", "72"],
-    correct: 1
-  }
-];
+function addMessage(text, type, showCopy = false) {
+  const bubble = document.createElement("div");
+  bubble.className = "message " + type;
+  bubble.textContent = text;
 
-function safeLoad(key, fallback) {
-  try {
-    const value = localStorage.getItem(key);
-    return value === null ? fallback : JSON.parse(value);
-  } catch {
-    return fallback;
-  }
-}
-
-function saveHistory() {
-  try {
-    localStorage.setItem(HISTORY_KEY, JSON.stringify(messages));
-  } catch {
-    // De chat blijft bruikbaar als opslag niet beschikbaar is.
-  }
-}
-
-function addMessage(role, text, save = true) {
-  const message = {
-    role,
-    text: String(text).slice(0, 10000),
-    time: Date.now()
-  };
-
-  messages.push(message);
-
-  if (messages.length > 100) {
-    messages = messages.slice(-100);
-  }
-
-  renderMessage(message);
-
-  if (save) saveHistory();
-}
-
-function renderMessage(message) {
-  const welcome = document.getElementById("welkom");
-  if (welcome) welcome.remove();
-
-  const wrapper = document.createElement("div");
-  wrapper.className = "message " +
-    (message.role === "user" ? "user-message" : "ai-message");
-
-  const name = document.createElement("span");
-  name.className = "message-name";
-  name.textContent = message.role === "user" ? "Jij" : "Sem AI";
-
-  const content = document.createElement("div");
-  content.textContent = message.text;
-
-  wrapper.append(name, content);
-
-  if (message.role === "assistant") {
-    const tools = document.createElement("div");
-    tools.className = "message-tools";
-
+  if (showCopy) {
     const copy = document.createElement("button");
-    copy.className = "tool-btn";
-    copy.textContent = "📋 Kopiëren";
-    copy.addEventListener("click", () => copyText(message.text, copy));
-
-    const speak = document.createElement("button");
-    speak.className = "tool-btn";
-    speak.textContent = "🔊 Voorlezen";
-    speak.addEventListener("click", () => speakText(message.text));
-
-    tools.append(copy, speak);
-    wrapper.appendChild(tools);
+    copy.textContent = "📋 Kopieer";
+    copy.className = "small-button";
+    copy.style.display = "block";
+    copy.style.marginTop = "10px";
+    copy.addEventListener("click", () => copyText(text));
+    bubble.appendChild(copy);
   }
 
-  chat.appendChild(wrapper);
+  chat.appendChild(bubble);
   chat.scrollTop = chat.scrollHeight;
 }
 
-function restoreHistory() {
-  const saved = safeLoad(HISTORY_KEY, []);
-
-  if (!Array.isArray(saved)) return;
-
-  messages = saved
-    .filter(m =>
-      m &&
-      (m.role === "user" || m.role === "assistant") &&
-      typeof m.text === "string"
-    )
-    .slice(-100);
-
-  messages.forEach(renderMessage);
-
-  if (messages.length === 0) {
-    showWelcome();
+function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text)
+      .then(() => alert("Gekopieerd!"))
+      .catch(() => fallbackCopy(text));
+  } else {
+    fallbackCopy(text);
   }
 }
 
-function showWelcome() {
-  const welcome = document.createElement("div");
-  welcome.className = "welcome";
-  welcome.id = "welkom";
-  welcome.append(
-    document.createTextNode("✨"),
-    document.createElement("br")
-  );
-
-  const title = document.createElement("strong");
-  title.textContent = "Hoi! Dit is Sem AI.";
-
-  welcome.append(title, document.createElement("br"));
-  welcome.append(document.createTextNode("Waar kan ik je mee helpen?"));
-  chat.appendChild(welcome);
-}
-
-function clearChat() {
-  messages = [];
-  quiz = null;
-  quizScore = 0;
-  chat.replaceChildren();
-  showWelcome();
-
+function fallbackCopy(text) {
+  const area = document.createElement("textarea");
+  area.value = text;
+  area.style.position = "fixed";
+  area.style.opacity = "0";
+  document.body.appendChild(area);
+  area.select();
   try {
-    localStorage.removeItem(HISTORY_KEY);
-  } catch {}
+    document.execCommand("copy");
+    alert("Gekopieerd!");
+  } catch (error) {
+    alert("Kopiëren lukte niet. Selecteer en kopieer de tekst handmatig.");
+  }
+  area.remove();
 }
 
-function showTyping() {
-  const el = document.createElement("div");
-  el.className = "message ai-message typing";
-  el.id = "typingIndicator";
-  el.textContent = "Sem AI is aan het nadenken";
-  chat.appendChild(el);
-  chat.scrollTop = chat.scrollHeight;
+function getAnswer(question) {
+  const q = question.toLowerCase().trim();
 
-  let dots = 0;
-  const interval = setInterval(() => {
-    dots = (dots + 1) % 4;
-    el.textContent = "Sem AI is aan het nadenken" + ".".repeat(dots);
-    if (!document.body.contains(el)) clearInterval(interval);
-  }, 300);
-
-  return { el, interval };
-}
-
-/*
- * Een veilige rekenparser voor getallen en + - * / % ^ en haakjes.
- * Er wordt geen eval() of Function() gebruikt.
- */
-function calculate(expression) {
-  const source = expression.replace(/,/g, ".").replace(/\s+/g, "");
-
-  if (!source || source.length > 100) {
-    throw new Error("Ongeldige of te lange som.");
+  if (q.includes("kunstmatige intelligentie") || q === "wat is ai" || q.includes("wat is ai")) {
+    return "Kunstmatige intelligentie (AI) is technologie waarmee computers taken kunnen uitvoeren waarvoor normaal gesproken menselijke intelligentie nodig is. Denk aan tekst begrijpen, afbeeldingen herkennen en problemen oplossen.";
+  }
+  if (q.includes("lucht blauw") || q.includes("hemel blauw")) {
+    return "De lucht lijkt blauw doordat luchtmoleculen blauw licht van de zon sterker verstrooien dan rood licht. Daardoor komt er vanuit alle richtingen veel blauw licht in onze ogen.";
+  }
+  if (q.includes("zwarte gaten") || q.includes("black hole")) {
+    return "Een zwart gat is een gebied in de ruimte met zo'n sterke zwaartekracht dat zelfs licht niet kan ontsnappen als het te dichtbij komt. Sommige ontstaan wanneer zware sterren instorten.";
+  }
+  if (q.includes("elon musk")) {
+    return "Elon Musk is een ondernemer die onder andere bekend is van Tesla en SpaceX. Hij is betrokken bij elektrische auto's, ruimtevaart en technologie.";
+  }
+  if (q.includes("hoofdsteden")) {
+    return "Nederland: Amsterdam 🇳🇱\nBelgië: Brussel 🇧🇪\nFrankrijk: Parijs 🇫🇷";
+  }
+  if (q.includes("hoofdstad van nederland")) return "De hoofdstad van Nederland is Amsterdam. 🇳🇱";
+  if (q.includes("hoofdstad van belgië") || q.includes("hoofdstad van belgie")) return "De hoofdstad van België is Brussel. 🇧🇪";
+  if (q.includes("hoofdstad van frankrijk")) return "De hoofdstad van Frankrijk is Parijs. 🇫🇷";
+  if (q.includes("ruimte") || q.includes("heelal")) {
+    return "De ruimte is enorm groot! Er zijn miljarden sterrenstelsels. Ons zonnestelsel bevindt zich in de Melkweg, met de zon en acht planeten.";
+  }
+  if (q.includes("hallo") || q.includes("hoi") || q.includes("hey")) {
+    return "Hoi! 😄 Waar kan ik je mee helpen? Je kunt me iets vragen, de rekenmachine proberen of de quiz starten.";
+  }
+  if (q.includes("jouw naam") || q.includes("wie ben jij")) {
+    return "Ik ben Sem AI, een gratis demo-assistent die door Sem is gemaakt. Ik gebruik ingebouwde antwoorden en tools.";
+  }
+  if (q.includes("grap")) {
+    return "Waarom kan een computer niet goed zingen? Omdat hij alleen maar met bits werkt! 😄";
+  }
+  if (q.includes("help")) {
+    return "Natuurlijk! Je kunt een van de voorbeeldvragen gebruiken, iets uitrekenen met de rekenmachine of je kennis testen met de quiz.";
   }
 
-  const tokens = source.match(
-    /(?:\d+(?:\.\d*)?|\.\d+)|[()+\-*/%^]/g
-  );
+  return "Goede vraag! 🤔 Mijn gratis demo heeft nog niet voor elke vraag een ingebouwd antwoord. Probeer het anders te formuleren of kies een voorbeeldvraag. Voor antwoorden op allerlei nieuwe vragen is een echte AI-dienst nodig.";
+}
 
-  if (!tokens || tokens.join("") !== source) {
-    throw new Error("Gebruik alleen getallen, haakjes en + - * / % ^.");
+function sendQuestion(text) {
+  const clean = text.trim();
+  if (!clean) return;
+
+  addMessage(clean, "user");
+
+  if (quizActive) {
+    if (clean.toLowerCase() === "stop quiz") {
+      quizActive = false;
+      addMessage("Quiz gestopt! Je score was " + quizScore + ".", "bot");
+      return;
+    }
+    addMessage("Maak eerst de quiz af of typ 'stop quiz' om te stoppen.", "bot");
+    return;
+  }
+
+  lastAnswer = getAnswer(clean);
+  addMessage(lastAnswer, "bot", true);
+}
+
+document.getElementById("chatForm").addEventListener("submit", event => {
+  event.preventDefault();
+  sendQuestion(questionInput.value);
+  questionInput.value = "";
+  questionInput.focus();
+});
+
+document.querySelectorAll("[data-question]").forEach(button => {
+  button.addEventListener("click", () => {
+    sendQuestion(button.dataset.question);
+  });
+});
+
+document.getElementById("clearButton").addEventListener("click", () => {
+  chat.replaceChildren();
+  addMessage("Chat gewist! Waar wil je het over hebben? 😊", "bot");
+  lastAnswer = "";
+});
+
+document.getElementById("copyLast").addEventListener("click", () => {
+  if (lastAnswer) copyText(lastAnswer);
+  else alert("Er is nog geen antwoord om te kopiëren.");
+});
+
+/* Veilige rekenmachine zonder eval() */
+function calculate(expression) {
+  let input = expression.replace(/\s+/g, "");
+  if (!input || !/^[0-9+\-*/().]+$/.test(input)) {
+    throw new Error("Gebruik alleen getallen, haakjes en + - * /.");
   }
 
   let pos = 0;
 
-  function parseExpression() {
-    let value = parseTerm();
-
-    while (tokens[pos] === "+" || tokens[pos] === "-") {
-      const op = tokens[pos++];
-      const right = parseTerm();
-      value = op === "+" ? value + right : value - right;
-    }
-
-    return value;
-  }
-
-  function parseTerm() {
-    let value = parseUnary();
-
-    while (["*", "/", "%"].includes(tokens[pos])) {
-      const op = tokens[pos++];
-      const right = parseUnary();
-
-      if ((op === "/" || op === "%") && right === 0) {
-        throw new Error("Delen door nul kan niet.");
-      }
-
-      if (op === "*") value *= right;
-      if (op === "/") value /= right;
-      if (op === "%") value %= right;
-    }
-
-    return value;
-  }
-
-  function parseUnary() {
-    if (tokens[pos] === "+") {
+  function number() {
+    if (input[pos] === "+") {
       pos++;
-      return parseUnary();
+      return number();
     }
-
-    if (tokens[pos] === "-") {
+    if (input[pos] === "-") {
       pos++;
-      return -parseUnary();
+      return -number();
     }
-
-    return parsePower();
-  }
-
-  function parsePower() {
-    let value = parsePrimary();
-
-    if (tokens[pos] === "^") {
+    if (input[pos] === "(") {
       pos++;
-      value = Math.pow(value, parseUnary());
-    }
-
-    return value;
-  }
-
-  function parsePrimary() {
-    const token = tokens[pos++];
-
-    if (token === "(") {
-      const value = parseExpression();
-
-      if (tokens[pos++] !== ")") {
-        throw new Error("Er ontbreekt een sluithaakje.");
-      }
-
+      const value = sum();
+      if (input[pos] !== ")") throw new Error("Controleer je haakjes.");
+      pos++;
       return value;
     }
 
-    if (token === undefined || !/^(?:\d+(?:\.\d*)?|\.\d+)$/.test(token)) {
-      throw new Error("Deze som kan ik niet lezen.");
+    const start = pos;
+    while (/[0-9.]/.test(input[pos] || "") && pos < input.length) pos++;
+    const token = input.slice(start, pos);
+    if (!token || token === "." || (token.match(/\./g) || []).length > 1) {
+      throw new Error("Ongeldig getal.");
     }
-
     return Number(token);
   }
 
-  const result = parseExpression();
-
-  if (pos !== tokens.length || !Number.isFinite(result)) {
-    throw new Error("Deze som geeft geen geldig eindresultaat.");
-  }
-
-  if (Math.abs(result) > 1e15) {
-    throw new Error("Het antwoord is te groot om weer te geven.");
-  }
-
-  return Number(result.toPrecision(12));
-}
-
-function startQuiz() {
-  quiz = {
-    questions: [...quizQuestions].sort(() => Math.random() - 0.5),
-    index: 0,
-    score: 0
-  };
-
-  addMessage("assistant",
-    "🧠 Quiz gestart! Beantwoord de vragen met 1, 2 of 3. Succes!"
-  );
-
-  nextQuizQuestion();
-}
-
-function nextQuizQuestion() {
-  if (!quiz) return;
-
-  if (quiz.index >= quiz.questions.length) {
-    const score = quiz.score;
-    quiz = null;
-
-    addMessage("assistant",
-      `🏆 De quiz is afgelopen!\nJe hebt ${score} van de quizvragen goed.\nTyp "start een quiz" om opnieuw te spelen.`
-    );
-    return;
-  }
-
-  const q = quiz.questions[quiz.index];
-
-  addMessage("assistant",
-    `Vraag ${quiz.index + 1} van ${quiz.questions.length}:\n${q.q}\n\n` +
-    q.a.map((answer, i) => `${i + 1}. ${answer}`).join("\n") +
-    "\n\nTyp 1, 2 of 3."
-  );
-}
-
-function answerQuiz(text) {
-  if (!quiz) return false;
-
-  const choice = Number(text.trim());
-
-  if (!Number.isInteger(choice) || choice < 1 || choice > 3) {
-    addMessage("assistant", "Kies een antwoord door 1, 2 of 3 te typen.");
-    return true;
-  }
-
-  const q = quiz.questions[quiz.index];
-
-  if (choice - 1 === q.correct) {
-    quiz.score++;
-    addMessage("assistant", "✅ Goed antwoord!");
-  } else {
-    addMessage("assistant", `❌ Niet helemaal. Het juiste antwoord was: ${q.a[q.correct]}.`);
-  }
-
-  quiz.index++;
-  nextQuizQuestion();
-  return true;
-}
-
-function getAnswer(text) {
-  const t = text.toLowerCase().trim();
-
-  if (quiz && answerQuiz(text)) return null;
-
-  if (/^(stop quiz|stop de quiz|quiz stoppen)$/.test(t)) {
-    quiz = null;
-    return "De quiz is gestopt. Typ 'start een quiz' als je opnieuw wilt spelen.";
-  }
-
-  if (
-    t.includes("start een quiz") ||
-    t === "quiz" ||
-    t.includes("quiz starten")
-  ) {
-    startQuiz();
-    return null;
-  }
-
-  if (
-    t.startsWith("reken uit:") ||
-    t.startsWith("bereken:") ||
-    t.startsWith("som:")
-  ) {
-    const expression = text.slice(text.indexOf(":") + 1);
-
-    try {
-      return `🧮 Het antwoord is: ${calculate(expression)}`;
-    } catch (e) {
-      return "Ik kan deze som niet berekenen. Gebruik bijvoorbeeld: Reken uit: (12 + 8) * 3";
+  function product() {
+    let value = number();
+    while (input[pos] === "*" || input[pos] === "/") {
+      const op = input[pos++];
+      const next = number();
+      if (op === "/" && next === 0) throw new Error("Delen door nul kan niet.");
+      value = op === "*" ? value * next : value / next;
     }
+    return value;
   }
 
-  const mathMatch = t.match(
-    /^(?:hoeveel is|wat is)\s+(.+?)[?!.]*$/
-  );
-
-  if (mathMatch && /[0-9]/.test(mathMatch[1]) &&
-      /^[0-9\s.,()+\-*/%^]+$/.test(mathMatch[1])) {
-    try {
-      return `🧮 Het antwoord is: ${calculate(mathMatch[1])}`;
-    } catch {}
-  }
-
-  if (/\b(hallo|hoi|hey|hello|heyy)\b/.test(t)) {
-    return "Hoi! 👋 Welkom bij Sem AI. Wat wil je vandaag ontdekken?";
-  }
-
-  if (t.includes("elon musk")) {
-    return "Elon Musk is een ondernemer die bekendstaat om Tesla, een bedrijf voor elektrische auto's, en SpaceX, een ruimtevaartbedrijf. Hij is ook betrokken geweest bij andere technologiebedrijven. Dit is een korte algemene beschrijving; ik haal geen live informatie van internet op.";
-  }
-
-  if (t.includes("wie ben je") || t.includes("jouw naam")) {
-    return "Ik ben Sem AI, een chatbotproject gemaakt door Sem! 🚀 Ik gebruik nu vooraf geprogrammeerde antwoorden en een paar ingebouwde hulpmiddelen.";
-  }
-
-  if (t.includes("wat kun je") || t.includes("wat kan je")) {
-    return "Ik kan grapjes vertellen, een paar weetjes geven, eenvoudige sommen berekenen, een quiz starten en antwoorden voorlezen. Ik kan nog niet zelfstandig alle kennisvragen beantwoorden.";
-  }
-
-  if (t.includes("hoofdstad van frankrijk")) {
-    return "De hoofdstad van Frankrijk is Parijs. 🇫🇷";
-  }
-
-  if (t.includes("hoofdstad van nederland")) {
-    return "De hoofdstad van Nederland is Amsterdam. 🇳🇱";
-  }
-
-  if (t.includes("waarom is de lucht blauw")) {
-    return "De lucht lijkt blauw doordat luchtmoleculen het blauwe deel van het zonlicht sterker verstrooien dan veel andere kleuren. Daardoor komt er vanuit alle richtingen blauw licht naar onze ogen.";
-  }
-
-  if (t.includes("hoe werkt het heelal") || t.includes("wat is een zwart gat")) {
-    return "Het heelal bevat sterren, planeten, sterrenstelsels en nog veel meer. Een zwart gat is een gebied in de ruimte waarvan de zwaartekracht zo sterk is dat zelfs licht niet kan ontsnappen zodra het binnen een bepaalde grens komt.";
-  }
-
-  if (t.includes("hoe gaat het")) {
-    return "Bedankt voor het vragen! 😊 Ik ben klaar om je te helpen.";
-  }
-
-  if (t.includes("grap")) {
-    return "Waarom neemt een computer nooit vakantie? Hij is bang zijn werkgeheugen te verliezen! 😂";
-  }
-
-  if (t.includes("bedankt") || t.includes("dank je")) {
-    return "Graag gedaan! 😊";
-  }
-
-  if (/\b(doei|tot ziens)\b/.test(t)) {
-    return "Tot later! 👋";
-  }
-
-  return "Dat is een interessante vraag! Ik heb daar nog geen ingebouwd antwoord op. Zonder AI-dienst of internetbron kan ik niet zomaar nieuwe informatie opzoeken. Je kunt wel vragen om een rekensom, quiz, grap of een van mijn ingebouwde weetjes.";
-}
-
-function sendMessage(text) {
-  if (busy || !text.trim()) return;
-
-  const clean = text.trim().slice(0, 2000);
-  addMessage("user", clean);
-
-  input.value = "";
-  busy = true;
-  sendBtn.disabled = true;
-
-  const typing = showTyping();
-
-  // Korte animatie; antwoorden worden lokaal berekend.
-  setTimeout(() => {
-    clearInterval(typing.interval);
-    typing.el.remove();
-
-    try {
-      const answer = getAnswer(clean);
-      if (answer !== null && answer !== undefined) {
-        addMessage("assistant", answer);
-      }
-    } catch {
-      addMessage("assistant", "Oeps, er ging iets mis. Probeer het nog eens.");
+  function sum() {
+    let value = product();
+    while (input[pos] === "+" || input[pos] === "-") {
+      const op = input[pos++];
+      const next = product();
+      value = op === "+" ? value + next : value - next;
     }
+    return value;
+  }
 
-    busy = false;
-    sendBtn.disabled = false;
-    input.focus();
-    chat.scrollTop = chat.scrollHeight;
-  }, 650);
+  const result = sum();
+  if (pos !== input.length || !Number.isFinite(result)) {
+    throw new Error("Controleer je berekening.");
+  }
+  return Number(result.toFixed(8));
 }
 
-async function copyText(text, button) {
-  try {
-    await navigator.clipboard.writeText(text);
-    button.textContent = "✅ Gekopieerd";
-  } catch {
-    const area = document.createElement("textarea");
-    area.value = text;
-    area.style.position = "fixed";
-    area.style.opacity = "0";
-    document.body.appendChild(area);
-    area.select();
-
-    try {
-      const ok = document.execCommand("copy");
-      button.textContent = ok ? "✅ Gekopieerd" : "Selecteer en kopieer";
-    } catch {
-      button.textContent = "Kopiëren niet gelukt";
-    }
-
-    area.remove();
-  }
-
-  setTimeout(() => {
-    button.textContent = "📋 Kopiëren";
-  }, 1800);
-}
-
-function speakText(text) {
-  if (!("speechSynthesis" in window)) {
-    alert("Voorlezen wordt niet ondersteund door deze browser.");
-    return;
-  }
-
-  window.speechSynthesis.cancel();
-
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = "nl-NL";
-  utterance.rate = 1;
-  window.speechSynthesis.speak(utterance);
-}
-
-function setupSpeechRecognition() {
-  const SpeechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
-
-  if (!SpeechRecognition) {
-    alert("Spraakherkenning wordt niet ondersteund in deze browser. Je kunt antwoorden vaak wel laten voorlezen.");
-    return;
-  }
-
-  recognition = new SpeechRecognition();
-  recognition.lang = "nl-NL";
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
-
-  recognition.onresult = event => {
-    const transcript = event.results[0][0].transcript;
-    input.value = transcript;
-    input.focus();
-  };
-
-  recognition.onerror = () => {
-    alert("Ik kon je stem niet herkennen. Controleer de microfoonrechten en probeer opnieuw.");
-  };
-
-  recognition.start();
-}
-
-function applyTheme(theme) {
-  document.body.classList.remove("light", "blue", "green");
-
-  if (theme !== "dark") {
-    document.body.classList.add(theme);
-  }
-
-  try {
-    localStorage.setItem(THEME_KEY, JSON.stringify(theme));
-  } catch {}
-}
-
-document.getElementById("themeBtn").addEventListener("click", () => {
-  const themes = ["dark", "light", "blue", "green"];
-  const current = themes.find(t => document.body.classList.contains(t)) || "dark";
-  const next = themes[(themes.indexOf(current) + 1) % themes.length];
-
-  applyTheme(next);
-
-  const labels = {
-    dark: "Donker",
-    light: "Licht",
-    blue: "Blauw",
-    green: "Groen"
-  };
-
-  document.getElementById("themeBtn").textContent =
-    "🎨 " + labels[next];
-});
-
-document.getElementById("voiceBtn").addEventListener("click", () => {
-  if (!voiceEnabled) {
-    setupSpeechRecognition();
-  } else if ("speechSynthesis" in window) {
-    window.speechSynthesis.cancel();
-  }
-
-  voiceEnabled = !voiceEnabled;
-  document.getElementById("voiceBtn").textContent =
-    voiceEnabled ? "🎙 Spraak aan" : "🔊 Spraak";
-});
-
-document.getElementById("newChatBtn").addEventListener("click", () => {
-  clearChat();
-  input.focus();
-});
-
-document.getElementById("clearBtn").addEventListener("click", () => {
-  if (confirm("Wil je de hele chatgeschiedenis wissen?")) {
-    clearChat();
-  }
-});
-
-document.querySelectorAll("[data-prompt]").forEach(button => {
-  button.addEventListener("click", () => {
-    sendMessage(button.dataset.prompt);
-  });
-});
-
-form.addEventListener("submit", event => {
+document.getElementById("calcForm").addEventListener("submit", event => {
   event.preventDefault();
-  sendMessage(input.value);
+  const input = document.getElementById("calcInput").value;
+  const resultBox = document.getElementById("calcResult");
+  try {
+    resultBox.textContent = "Antwoord: " + calculate(input);
+  } catch (error) {
+    resultBox.textContent = error.message;
+  }
 });
 
-const savedTheme = safeLoad(THEME_KEY, "dark");
-applyTheme(["dark", "light", "blue", "green"].includes(savedTheme)
-  ? savedTheme
-  : "dark");
+/* Quiz */
+const questions = [
+  { q: "Wat is de hoofdstad van Nederland?", a: ["Rotterdam", "Amsterdam", "Utrecht"], correct: 1 },
+  { q: "Welke planeet staat het dichtst bij de zon?", a: ["Venus", "Mars", "Mercurius"], correct: 2 },
+  { q: "Hoeveel is 7 × 8?", a: ["54", "56", "64"], correct: 1 },
+  { q: "Welk dier staat bekend als de koning van de dieren?", a: ["Leeuw", "Tijger", "Olifant"], correct: 0 },
+  { q: "Welke planeet staat bekend als de rode planeet?", a: ["Jupiter", "Mars", "Neptunus"], correct: 1 }
+];
 
-restoreHistory();
+function showQuizQuestion() {
+  const q = questions[quizIndex];
+  document.getElementById("quizQuestion").textContent =
+    "Vraag " + (quizIndex + 1) + " van " + questions.length + ": " + q.q;
+
+  const answers = document.getElementById("quizAnswers");
+  answers.replaceChildren();
+
+  q.a.forEach((answer, index) => {
+    const button = document.createElement("button");
+    button.className = "small-button";
+    button.textContent = answer;
+    button.addEventListener("click", () => chooseAnswer(index));
+    answers.appendChild(button);
+  });
+}
+
+function chooseAnswer(index) {
+  if (!quizActive) return;
+
+  const q = questions[quizIndex];
+  const result = document.getElementById("quizResult");
+
+  if (index === q.correct) {
+    quizScore++;
+    result.textContent = "Goed gedaan! 🎉 Score: " + quizScore;
+  } else {
+    result.textContent = "Helaas! Het juiste antwoord is " + q.a[q.correct] +
+      ". Score: " + quizScore;
+  }
+
+  quizIndex++;
+
+  if (quizIndex >= questions.length) {
+    quizActive = false;
+    document.getElementById("quizQuestion").textContent =
+      "Quiz afgelopen! Je scoorde " + quizScore + " van " + questions.length + ".";
+    document.getElementById("quizAnswers").replaceChildren();
+    document.getElementById("startQuiz").textContent = "Opnieuw spelen";
+  } else {
+    showQuizQuestion();
+  }
+}
+
+document.getElementById("startQuiz").addEventListener("click", () => {
+  quizIndex = 0;
+  quizScore = 0;
+  quizActive = true;
+  document.getElementById("quizResult").textContent = "Je score: 0";
+  document.getElementById("startQuiz").textContent = "Quiz opnieuw starten";
+  showQuizQuestion();
+});
+
+/* Achtergrond wisselen */
+document.getElementById("themeButton").addEventListener("click", () => {
+  themeIndex = (themeIndex + 1) % 3;
+  const backgrounds = [
+    "radial-gradient(ellipse at top, #172957, #080d1b 65%)",
+    "radial-gradient(ellipse at top, #174b45, #071510 65%)",
+    "radial-gradient(ellipse at top, #45205f, #100817 65%)"
+  ];
+  document.body.style.background = backgrounds[themeIndex];
+});
 </script>
 </body>
 </html>
-
